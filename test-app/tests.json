@@ -2,17 +2,21 @@
   {
     "class": "HelloController",
     "fn": [
-      "sayHello"
+      {
+        "name": "sayHello",
+        "args": "./tests/hello-controller/say-hello.test"
+      }
     ],
     "path": "./controllers/hello.controller",
-    "args": [
-      "./tests/hello-controller/say-hello.test"
-    ],
     "lens": [
       {
         "class": "HelloService",
         "path": "./services/hello.service",
-        "fn": "greet"
+        "fn": [
+          {
+            "name": "greet"
+          }
+        ]
       }
     ]
   }

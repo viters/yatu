@@ -18,4 +18,8 @@ module.exports = class TestFlow {
       error,
     });
   }
+
+  print() {
+    this._finishedFlow.forEach(x => console.log(`${x.className}:${x.fn} = ${x.time}ms`));
+  }
 };

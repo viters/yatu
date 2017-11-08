@@ -2,9 +2,8 @@ const ClassBuilder = require('./class-builder'),
   classBuilderFactory = require('./class-builder-factory');
 
 module.exports = class ClassTreeBuilder {
-  constructor(resultHolder, pathToProject) {
+  constructor(resultHolder) {
     this._resultHolder = resultHolder;
-    this._pathToProject = pathToProject;
   }
 
   build(configClassTreeRoot) {
@@ -17,8 +16,8 @@ module.exports = class ClassTreeBuilder {
   _buildDependenciesForRoot(configClassTreeRoot) {
     return this._classBuilder(
       configClassTreeRoot.class,
-      this._convertPath(configClassTreeRoot.path),
-      configClassTreeRoot.fn,
+      configClassTreeRoot.path,
+      configClassTreeRoot.fn.map(x => x.name),
       this._buildDependencies(configClassTreeRoot.lens)
     ).build();
   }
@@ -31,14 +30,10 @@ module.exports = class ClassTreeBuilder {
     return lens.map(x =>
       this._classBuilder(
         x.class,
-        this._convertPath(x.path),
-        x.fn,
+        x.path,
+        x.fn.map(x => x.name),
         this._buildDependencies(x.lens)
       ).build()
     );
-  }
-
-  _convertPath(path) {
-    return this._pathToProject + path.slice(2, path.length);
   }
 };

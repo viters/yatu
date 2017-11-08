@@ -1,5 +1,3 @@
-const consoleHelpers = require('./console-helpers');
-
 module.exports = class ClassBuilder {
   constructor(className, path, fnsToProxy, ctorArgs, testFlow) {
     this._name = className;
@@ -31,6 +29,7 @@ module.exports = class ClassBuilder {
 
         return (...args) => {
           this._testFlow.descend(this._name, propKey);
+          console.log('ran', propKey);
           try {
             const startDate = new Date();
             origMethod.apply(obj, args);

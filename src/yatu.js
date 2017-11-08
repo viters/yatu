@@ -1,7 +1,8 @@
 const figlet = require('figlet'),
   configReader = require('./config-reader'),
   Result = require('./result'),
-  ClassTreeBuilder = require('./class-tree-builder');
+  ClassTreeBuilder = require('./class-tree-builder'),
+  TestsRunner = require('./tests-runner');
 
 class Yatu {
   constructor() {
@@ -17,9 +18,12 @@ class Yatu {
 
     this._displayHelloMessage();
     this._readConfig();
-    this._createTestCases();
+    this._createClassTree();
 
-    this._classTree[0].sayHello({query: {name: 'test'}}, {send: () => null});
+    this._testsRunner = new TestsRunner(this._config, this._classTree);
+    this._testsRunner.run();
+
+    this._result.print();
 
     this._displayGoodbyeMessage();
   }
@@ -31,9 +35,28 @@ class Yatu {
 
   _readConfig() {
     this._config = configReader(this._pathToTestsFile);
+    this._config.forEach(x => this._convertPathsInTestCase(x));
   }
 
-  _createTestCases() {
+  _convertPathsInTestCase(testCase) {
+    if (testCase.path) {
+      testCase.path = this._convertPath(testCase.path);
+    }
+
+    if (testCase.fn) {
+      testCase.fn.forEach(x => x.args ? x.args = this._convertPath(x.args) : null);
+    }
+
+    if (testCase.lens) {
+      testCase.lens.forEach(x => this._convertPathsInTestCase(x));
+    }
+  }
+
+  _convertPath(path) {
+    return this._pathToProject + path.slice(2, path.length);
+  }
+
+  _createClassTree() {
     this._classTree =
       this._config.map(x => this._classTreeBuilder.build(x));
   }

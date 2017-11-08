@@ -1,4 +1,5 @@
-const TestFlow = require('./test-flow');
+const TestFlow = require('./test-flow'),
+  consoleHelpers = require('./console-helpers');
 
 module.exports = class Result {
   constructor() {
@@ -18,5 +19,9 @@ module.exports = class Result {
 
     this._history.push(testCase);
     return testCase;
+  }
+
+  print() {
+    this._history.map(x => x.flow).forEach(x => x.print());
   }
 };

@@ -9,6 +9,8 @@ class HelloController {
       x = 6123 * 3423 + i;
     }
 
+    console.log('hello');
+
     const name = req.query.name || 'anonymous';
     res.send(this._helloService.greet(name));
   }

@@ -1,0 +1,1 @@
+module.exports = [{query: {name: 'Tobiasz'}}, {send: () => null}];
