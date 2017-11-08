@@ -1,6 +1,6 @@
 {
   "name": "flowless",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Perfomance testing tool",
   "main": "flowless.js",
   "repository": {

@@ -1,33 +1,39 @@
-const figlet = require('figlet');
+const figlet = require('figlet'),
+  configReader = require('./config-reader'),
+  ClassTreeFactory = require('./class-tree-factory');
 
-const tests = [
-  require('../test-app/tests/hello.test'),
-];
+class Flowless {
+  constructor() {
+    this._pathToTestsFile = '../test-app/tests.json';
+    this._pathToProject = '../test-app/';
+    this._config = [];
+    this._testCases = [];
 
-console.log(figlet.textSync('Flowless', () => null));
-console.log(`Welcome to Flowless v0.0.1\nYour tests will be performed now\n\n`);
+    this._displayHelloMessage();
+    this._readConfig();
+    this._createTestCases();
 
-const fgGreen = '\x1b[32m',
-      fgCyan = '\x1b[36m',
-      fgYellow = '\x1b[33m',
-      reset = '\x1b[0m';
+    this._testCases[0][0].object.sayHello({}, {send: () => null});
 
-const proxy = (fn, fnName, ctxName) => {
-  return new Proxy(fn, {
-    apply: (target, receiver, args) => {
-      console.log(`-+ ${fgYellow}${ctxName}${reset}:${fgCyan}${fnName}()${reset}`);
-      const startDate = new Date();
-      target(...args);
-      const endDate = new Date();
-      const compTime = endDate.getTime() - startDate.getTime();
-      console.log(`:: ${fgGreen}${compTime}${reset}ms`);
-    }
-  })
-};
+    this._displayGoodbyeMessage();
+  }
 
-tests.map(x => x())
-  .reduce((p, c) => p.concat(c), [])
-  .map(x => Object.assign(x, {fn: proxy(x.fn.bind(x.ctx), x.fn.name, x.ctx.constructor.name)}))
-  .forEach(x => x.fn(...x.args));
+  _displayHelloMessage() {
+    console.log(figlet.textSync('Flowless', () => null));
+    console.log(`Welcome to Flowless v0.1.0\nYour tests will be performed now\n\n`);
+  }
 
-console.log(`\n\nAll tests done`);
+  _readConfig() {
+    this._config = configReader(this._pathToTestsFile);
+  }
+
+  _createTestCases() {
+    this._testCases = this._config.map(x => (new ClassTreeFactory([x], this._pathToProject)).build());
+  }
+
+  _displayGoodbyeMessage() {
+    console.log('\n\nGoodbye');
+  }
+}
+
+new Flowless();
