@@ -4,12 +4,10 @@ class HelloController {
   }
 
   sayHello(req, res) {
-    setTimeout(() => {
-      let x = 0;
-      for (let i = 1; i < 100000000; i++) {
-        x = 6123 * 3423 + i;
-      }
-    }, 1000);
+    let x = 0;
+    for (let i = 1; i < 40000000; i++) {
+      x = 6123 * 3423 + i;
+    }
 
     const name = req.query.name || 'anonymous';
     res.send(this._helloService.greet(name));

@@ -10,13 +10,20 @@ module.exports = class ClassTreeFactory {
     return this._buildDependencies(this._configClassTree);
   }
 
-  _buildDependencies(lens) {
+  _buildDependencies(lens, depth = 0) {
     if (!lens || lens.length === 0) {
       return [];
     }
 
     return lens.map(x =>
-      (new ClassBuilder(x.class, this._convertPath(x.path), x.fn, this._buildDependencies(x.lens))).build()
+      (new ClassBuilder(
+        x.class,
+        this._convertPath(x.path),
+        x.fn,
+        this._buildDependencies(x.lens, depth + 1),
+        depth
+      ))
+        .build()
     );
   }
 

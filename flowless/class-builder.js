@@ -1,11 +1,13 @@
 const consoleHelpers = require('./console-helpers');
 
 module.exports = class ClassBuilder {
-  constructor(className, path, fnsToProxy, ctorArgs) {
+  constructor(className, path, fnsToProxy, ctorArgs, depth) {
     this._name = className;
     this._path = path;
     this._fnsToProxy = fnsToProxy;
     this._ctorArgs = ctorArgs;
+    this._depth = depth;
+    this._ident = this._prepareIdent();
   }
 
   build() {
@@ -13,16 +15,10 @@ module.exports = class ClassBuilder {
     const classObject = new classPrototype(...this._ctorArgs);
 
     if (!this._fnsToProxy || this._fnsToProxy.length === 0) {
-      return {
-        name: this._name,
-        object: classObject,
-      }
+      return classObject;
     }
 
-    return {
-      name: this._name,
-      object: this._proxifyObj(classObject),
-    }
+    return this._proxifyObj(classObject);
   }
 
   _proxifyObj(obj) {
@@ -35,18 +31,29 @@ module.exports = class ClassBuilder {
         }
 
         return (...args) => {
-          console.log(`-+ ${consoleHelpers.fgYellow}${this._name}${consoleHelpers.reset}:${consoleHelpers.fgCyan}${propKey}()${consoleHelpers.reset}`);
+          console.log(`${this._ident}-+ ${consoleHelpers.fgYellow}${this._name}${consoleHelpers.reset}:${consoleHelpers.fgCyan}${propKey}()${consoleHelpers.reset}`);
           try {
             const startDate = new Date();
             origMethod.apply(obj, args);
             const endDate = new Date();
             const compTime = endDate.getTime() - startDate.getTime();
-            console.log(`:: ${consoleHelpers.fgGreen}${compTime}${consoleHelpers.reset}ms`);
+            console.log(`${this._ident}:: ${consoleHelpers.fgGreen}${compTime}${consoleHelpers.reset}ms`);
           } catch (e) {
-            console.log(`${consoleHelpers.bgRed}!! ${e}${consoleHelpers.reset}`);
+            console.log(`${this._ident}${consoleHelpers.bgRed}!! ${e}${consoleHelpers.reset}`);
           }
         }
       }
     });
+  }
+
+  _prepareIdent() {
+    const space = '  ';
+    let result = '';
+
+    for (let i = 0; i < this._depth; i++) {
+      result += space;
+    }
+
+    return result;
   }
 };

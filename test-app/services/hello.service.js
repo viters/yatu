@@ -4,11 +4,10 @@ class HelloService {
     for (let i = 1; i < 300000000; i++) {
       x = 6123 * 3423 + i;
     }
-    console.log(x);
 
     // throw new Error('Somethin fukd up');
 
-    return `Hello ${name}!`;
+    return `Hello ${name} ${x}!`;
   }
 }
 

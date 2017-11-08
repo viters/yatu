@@ -13,7 +13,7 @@ class Flowless {
     this._readConfig();
     this._createTestCases();
 
-    this._testCases[0][0].object.sayHello({}, {send: () => null});
+    this._testCases[0].sayHello({query: {name: 'test'}}, {send: () => null});
 
     this._displayGoodbyeMessage();
   }
@@ -28,7 +28,9 @@ class Flowless {
   }
 
   _createTestCases() {
-    this._testCases = this._config.map(x => (new ClassTreeFactory([x], this._pathToProject)).build());
+    this._testCases =
+      this._config.map(x => (new ClassTreeFactory([x], this._pathToProject)).build())
+        .reduce(x => (prev, curr) => curr);
   }
 
   _displayGoodbyeMessage() {
