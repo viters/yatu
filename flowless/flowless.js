@@ -1,19 +1,25 @@
 const figlet = require('figlet'),
   configReader = require('./config-reader'),
-  ClassTreeFactory = require('./class-tree-factory');
+  Result = require('./result'),
+  ClassTreeBuilder = require('./class-tree-builder');
 
 class Flowless {
   constructor() {
     this._pathToTestsFile = '../test-app/tests.json';
     this._pathToProject = '../test-app/';
     this._config = [];
-    this._testCases = [];
+    this._classTree = [];
+    this._result = new Result();
+    this._classTreeBuilder = new ClassTreeBuilder(
+      this._result,
+      this._pathToProject
+    );
 
     this._displayHelloMessage();
     this._readConfig();
     this._createTestCases();
 
-    this._testCases[0].sayHello({query: {name: 'test'}}, {send: () => null});
+    this._classTree[0].sayHello({query: {name: 'test'}}, {send: () => null});
 
     this._displayGoodbyeMessage();
   }
@@ -28,9 +34,8 @@ class Flowless {
   }
 
   _createTestCases() {
-    this._testCases =
-      this._config.map(x => (new ClassTreeFactory([x], this._pathToProject)).build())
-        .reduce(x => (prev, curr) => curr);
+    this._classTree =
+      this._config.map(x => this._classTreeBuilder.build(x));
   }
 
   _displayGoodbyeMessage() {
