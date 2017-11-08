@@ -3,7 +3,7 @@ const figlet = require('figlet'),
   Result = require('./result'),
   ClassTreeBuilder = require('./class-tree-builder');
 
-class Flowless {
+class Yatu {
   constructor() {
     this._pathToTestsFile = '../test-app/tests.json';
     this._pathToProject = '../test-app/';
@@ -25,8 +25,8 @@ class Flowless {
   }
 
   _displayHelloMessage() {
-    console.log(figlet.textSync('Flowless', () => null));
-    console.log(`Welcome to Flowless v0.1.1\nYour tests will be performed now\n\n`);
+    console.log(figlet.textSync('yatu', () => null));
+    console.log(`Welcome to yatu v0.1.1\nYour tests will be performed now\n\n`);
   }
 
   _readConfig() {
@@ -43,4 +43,4 @@ class Flowless {
   }
 }
 
-new Flowless();
+new Yatu();

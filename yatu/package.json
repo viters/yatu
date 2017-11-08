@@ -1,11 +1,11 @@
 {
-  "name": "flowless",
+  "name": "yatu",
   "version": "0.1.1",
-  "description": "Perfomance testing tool",
-  "main": "flowless.js",
+  "description": "Yet another (performance) testing utility",
+  "main": "yatu.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Viters/flowless"
+    "url": "https://github.com/Viters/yatu"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
