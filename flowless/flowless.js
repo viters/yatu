@@ -26,7 +26,7 @@ class Flowless {
 
   _displayHelloMessage() {
     console.log(figlet.textSync('Flowless', () => null));
-    console.log(`Welcome to Flowless v0.1.0\nYour tests will be performed now\n\n`);
+    console.log(`Welcome to Flowless v0.1.1\nYour tests will be performed now\n\n`);
   }
 
   _readConfig() {
