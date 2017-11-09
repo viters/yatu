@@ -1,30 +1,29 @@
-const ClassBuilder = require('./class-builder'),
-  classBuilderFactory = require('./class-builder-factory');
+const classBuilderFactory = require('./class-builder-factory')
 
 module.exports = class ClassTreeBuilder {
-  constructor(resultHolder) {
-    this._resultHolder = resultHolder;
+  constructor (resultHolder) {
+    this._resultHolder = resultHolder
   }
 
-  build(configClassTreeRoot) {
+  build (configClassTreeRoot) {
     this._classBuilder = classBuilderFactory(
       this._resultHolder.createCase().flow
-    );
-    return this._buildDependenciesForRoot(configClassTreeRoot);
+    )
+    return this._buildDependenciesForRoot(configClassTreeRoot)
   }
 
-  _buildDependenciesForRoot(configClassTreeRoot) {
+  _buildDependenciesForRoot (configClassTreeRoot) {
     return this._classBuilder(
       configClassTreeRoot.class,
       configClassTreeRoot.path,
       configClassTreeRoot.fn.map(x => x.name),
       this._buildDependencies(configClassTreeRoot.lens)
-    ).build();
+    ).build()
   }
 
-  _buildDependencies(lens) {
+  _buildDependencies (lens) {
     if (!lens || lens.length === 0) {
-      return [];
+      return []
     }
 
     return lens.map(x =>
@@ -34,6 +33,6 @@ module.exports = class ClassTreeBuilder {
         x.fn.map(x => x.name),
         this._buildDependencies(x.lens)
       ).build()
-    );
+    )
   }
-};
+}
