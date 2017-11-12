@@ -30,7 +30,7 @@ class Yatu {
 
   _displayHelloMessage () {
     console.log(figlet.textSync('yatu', () => null))
-    console.log(`Welcome to yatu v0.2.0\nYour tests will be performed now\n\n`)
+    console.log(`Welcome to yatu v0.3.0\nYour tests will be performed now\n\n`)
   }
 
   _readConfig () {
