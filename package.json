@@ -2,7 +2,7 @@
   "name": "yatu",
   "version": "0.3.0",
   "description": "Yet another (performance) testing utility",
-  "main": "yatu.js",
+  "main": "src/yatu.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/Viters/yatu"

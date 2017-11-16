@@ -4,14 +4,14 @@
     "fn": [
       {
         "name": "sayHello",
-        "args": "./tests/hello-controller/say-hello.test"
+        "args": "tests/hello-controller/say-hello.test"
       }
     ],
-    "path": "./controllers/hello.controller",
+    "path": "controllers/hello.controller",
     "lens": [
       {
         "class": "HelloService",
-        "path": "./services/hello.service",
+        "path": "services/hello.service",
         "fn": [
           {
             "name": "greet"

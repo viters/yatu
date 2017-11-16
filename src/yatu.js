@@ -6,8 +6,8 @@ const TestsRunner = require('./tests-runner')
 
 class Yatu {
   constructor () {
-    this._pathToTestsFile = '../test-app/tests.json'
-    this._pathToProject = '../test-app/'
+    this._pathToProject = process.argv[2]
+    this._pathToTestsFile = this._pathToProject + 'tests.json'
     this._config = []
     this._classTree = []
     this._result = new Result()
@@ -53,7 +53,7 @@ class Yatu {
   }
 
   _convertPath (path) {
-    return this._pathToProject + path.slice(2, path.length)
+    return '../' + this._pathToProject + path
   }
 
   _createClassTree () {
