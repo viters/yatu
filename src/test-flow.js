@@ -4,21 +4,18 @@ module.exports = class TestFlow {
   constructor () {
     this._flow = null
     this._current = null
-    this._previous = null
+    this._previous = []
   }
 
   descend (className, fn) {
-    this._previous = this._current
-
     if (!this._current) {
       this._current = {className, fn, children: []}
-    } else {
-      this._current = {className, fn, children: []}
-      this._previous.children.push(this._current)
-    }
-
-    if (!this._flow) {
       this._flow = this._current
+    } else {
+      let newElem = {className, fn, children: []}
+      this._current.children.push(newElem)
+      this._previous.push(this._current)
+      this._current = newElem
     }
   }
 
@@ -27,7 +24,7 @@ module.exports = class TestFlow {
     this._current.time = time
     this._current.error = error
 
-    this._current = this._previous
+    this._current = this._previous.pop()
   }
 
   print () {
