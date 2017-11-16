@@ -27,6 +27,10 @@ module.exports = class TestFlow {
     this._current = this._previous.pop()
   }
 
+  _getEffectiveTime(node) {
+    return node.time - node.children.map(x => x.time).reduce((prev, curr) => prev + curr, 0)
+  }
+
   print () {
     this._printStep(this._flow)
   }
@@ -38,7 +42,8 @@ module.exports = class TestFlow {
 
     const className = `${ch.fgYellow}${step.className}${ch.reset}`
     const fnName = `${ch.fgCyan}${step.fn}${ch.reset}`
-    const time = `${ch.fgGreen}${step.time}${ch.reset} ms`
+    const effectiveTime = `${ch.fgGreen}${this._getEffectiveTime(step)}${ch.reset} ms`
+    const overallTime = `${ch.fgGreen}${step.time}${ch.reset} ms`
 
     let tab = ''
     for (let i = 0; i < ident; i++) {
@@ -46,7 +51,7 @@ module.exports = class TestFlow {
     }
 
     console.log(`${tab}-> ${className}:${fnName}`)
-    console.log(`${tab}  :: Finished in ${time}`)
+    console.log(`${tab}  :: Finished in ${effectiveTime} (overall ${overallTime})`)
 
     step.children.forEach(x => this._printStep(x, ident + 1))
   }
