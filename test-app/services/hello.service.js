@@ -10,6 +10,7 @@ class HelloService {
     }
 
     this._smthService.smth();
+    this._smthService.smth();
 
     // throw new Error('Somethin fukd up');
     return `Hello ${name} ${x}!`;

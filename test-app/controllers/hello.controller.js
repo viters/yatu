@@ -1,6 +1,7 @@
 class HelloController {
-  constructor(helloService) {
+  constructor(helloService, smthService) {
     this._helloService = helloService;
+    this._smthService = smthService;
   }
 
   sayHello(req, res) {
@@ -10,9 +11,11 @@ class HelloController {
     }
 
     console.log('hello');
-
     const name = req.query.name || 'anonymous';
     res.send(this._helloService.greet(name));
+    res.send(this._helloService.greet(name));
+    res.send(this._smthService.smth());
+
   }
 }
 

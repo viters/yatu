@@ -28,6 +28,15 @@
             ]
           }
         ]
+      },
+      {
+        "class": "SmthService",
+        "path": "services/smth.service",
+        "fn": [
+          {
+            "name": "smth"
+          }
+        ]
       }
     ]
   }
