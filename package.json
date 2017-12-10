@@ -8,12 +8,13 @@
     "url": "https://github.com/Viters/yatu"
   },
   "scripts": {
-    "start": "node ./src/yatu.js \"test-app/\"",
+    "start": "node ./src/main.js \"test-app/\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "deep-freeze": "0.0.1",
     "figlet": "^1.2.0",
     "standard": "^10.0.3"
   }

@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "pg": "^6.4.2",
+    "pg-hstore": "^2.3.2"
   },
   "devDependencies": {},
   "scripts": {

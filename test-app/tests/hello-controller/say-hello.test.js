@@ -1,1 +1,1 @@
-module.exports = [{query: {name: 'Tobiasz'}}, {send: () => null}];
+module.exports = [{query: {name: 'Tobiasz'}}, {send: () => null}]

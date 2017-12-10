@@ -1,69 +1,61 @@
-const figlet = require('figlet')
-const configReader = require('./config-reader')
-const Result = require('./result')
-const ClassTreeBuilder = require('./class-tree-builder')
-const TestsRunner = require('./tests-runner')
+const ConfigReader = require('./modules/config/config-reader')
+const TestRunner = require('./modules/test-runner/test-runner')
+const ResultPrinter = require('./modules/result/result-printer')
+const TestSuite = require('./modules/test-suite/test-suite')
+const Injector = require('./modules/util/injector')
+const ObjectTreeReviver = require('./modules/reviver/object-tree-reviver')
+const ObjectProxifier = require('./modules/reviver/object-proxifier/object-proxifier')
+const ObjectReviver = require('./modules/reviver/object-reviver')
 
 class Yatu {
   constructor () {
     this._pathToProject = process.argv[2]
     this._pathToTestsFile = this._pathToProject + 'tests.json'
-    this._config = []
-    this._classTree = []
-    this._result = new Result()
-    this._classTreeBuilder = new ClassTreeBuilder(
-      this._result,
-      this._pathToProject
-    )
-
-    this._displayHelloMessage()
-    this._readConfig()
-    this._createClassTree()
-
-    this._testsRunner = new TestsRunner(this._config, this._classTree)
-    this._testsRunner.run()
-
-    this._result.print()
-
-    this._displayGoodbyeMessage()
+    this._config = null
+    this._resultPrinter
+    this._testRunner = null
+    this._testSuite = null
   }
 
-  _displayHelloMessage () {
-    console.log(figlet.textSync('yatu', () => null))
-    console.log(`Welcome to yatu v0.3.0\nYour tests will be performed now\n\n`)
+  bootstrap () {
+    this._createDependencies()
+    this._addDependenciesToInjector()
+
+    this._testSuite.prepare(this._config)
+    this._testSuite.execute()
+  }
+
+  _createDependencies () {
+    this._config = this._readConfig()
+    this._resultPrinter = this._createResultPrinter()
+    this._testRunner = this._createTestRunner()
+    this._testSuite = this._createTestSuite()
   }
 
   _readConfig () {
-    this._config = configReader(this._pathToTestsFile)
-    this._config.forEach(x => this._convertPathsInTestCase(x))
+    const configReader = new ConfigReader(this._pathToProject)
+    return configReader.readConfigFile(this._pathToTestsFile)
   }
 
-  _convertPathsInTestCase (testCase) {
-    if (testCase.path) {
-      testCase.path = this._convertPath(testCase.path)
-    }
-
-    if (testCase.fn) {
-      testCase.fn.forEach(x => x.args ? x.args = this._convertPath(x.args) : null)
-    }
-
-    if (testCase.lens) {
-      testCase.lens.forEach(x => this._convertPathsInTestCase(x))
-    }
+  _createResultPrinter () {
+    return new ResultPrinter()
   }
 
-  _convertPath (path) {
-    return '../' + this._pathToProject + path
+  _createTestRunner () {
+    return new TestRunner(this._resultPrinter)
   }
 
-  _createClassTree () {
-    this._classTree =
-      this._config.map(x => this._classTreeBuilder.build(x))
+  _createTestSuite () {
+    return new TestSuite(this._testRunner)
   }
 
-  _displayGoodbyeMessage () {
-    console.log('\n\nGoodbye')
+  _addDependenciesToInjector () {
+    Injector.perpetuate(this._config)
+    Injector.perpetuate(this._resultPrinter)
+    Injector.perpetuate(new ObjectProxifier())
+    Injector.perpetuate(new ObjectReviver())
+    Injector.perpetuate(new ObjectTreeReviver())
   }
 }
 
-new Yatu()
+module.exports = Yatu

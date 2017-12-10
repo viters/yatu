@@ -1,18 +1,16 @@
 [
   {
     "class": "HelloController",
-    "fn": [
-      {
-        "name": "sayHello",
-        "args": "tests/hello-controller/say-hello.test"
-      }
-    ],
+    "entry": {
+      "name": "sayHello",
+      "args": "tests/hello-controller/say-hello.test"
+    },
     "path": "controllers/hello.controller",
     "lens": [
       {
         "class": "HelloService",
         "path": "services/hello.service",
-        "fn": [
+        "checkpoints": [
           {
             "name": "greet"
           }
@@ -21,7 +19,7 @@
           {
             "class": "SmthService",
             "path": "services/smth.service",
-            "fn": [
+            "checkpoints": [
               {
                 "name": "smth"
               }
