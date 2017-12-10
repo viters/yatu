@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "node ./src/main.js \"test-app/\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/mocha --reporter spec"
   },
   "author": "",
   "license": "ISC",
