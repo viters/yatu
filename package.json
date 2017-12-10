@@ -16,6 +16,7 @@
   "dependencies": {
     "deep-freeze": "0.0.1",
     "figlet": "^1.2.0",
+    "mocha": "^4.0.1",
     "standard": "^10.0.3"
   }
 }
