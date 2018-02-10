@@ -1,6 +1,6 @@
 {
   "name": "yatu",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "Yet another (performance) testing utility",
   "main": "src/yatu.js",
   "repository": {
@@ -17,6 +17,8 @@
     "deep-freeze": "0.0.1",
     "figlet": "^1.2.0",
     "mocha": "^4.0.1",
+    "pg": "^7.4.1",
+    "sequelize": "^4.33.2",
     "standard": "^10.0.3"
   }
 }

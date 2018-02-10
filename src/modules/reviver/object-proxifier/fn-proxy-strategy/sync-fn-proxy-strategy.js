@@ -10,8 +10,8 @@ class SyncFnProxyStrategy extends AbstractFnProxyStrategy {
         const endDate = new Date()
         const compTime = endDate.getTime() - startDate.getTime()
         this._fnCallTree.ascend(compTime)
-      } catch (e) {
-        this._fnCallTree.ascend(-1, e)
+      } catch (error) {
+        this._fnCallTree.ascend(-1, {error})
       }
     }
   }

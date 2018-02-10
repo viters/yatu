@@ -8,6 +8,7 @@ class FnCall {
     this._status = FnCallStatus.START
     this._time = null
     this._error = null
+    this._msg = []
   }
 
   get className () {
@@ -38,12 +39,17 @@ class FnCall {
     return this._error
   }
 
+  get msg () {
+    return this._msg
+  }
+
   addChild (fnCall) {
     this._children.push(fnCall)
   }
 
-  markComplete (time) {
+  markComplete (time, msg = []) {
     this._time = time
+    this._msg = msg
     this._status = FnCallStatus.COMPLETE
   }
 

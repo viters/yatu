@@ -6,13 +6,14 @@ const Injector = require('./modules/util/injector')
 const ObjectTreeReviver = require('./modules/reviver/object-tree-reviver')
 const ObjectProxifier = require('./modules/reviver/object-proxifier/object-proxifier')
 const ObjectReviver = require('./modules/reviver/object-reviver')
+const DbWrapper = require('./modules/util/db-wrapper')
 
 class Yatu {
   constructor () {
     this._pathToProject = process.argv[2]
     this._pathToTestsFile = this._pathToProject + 'tests.json'
     this._config = null
-    this._resultPrinter
+    this._resultPrinter = null
     this._testRunner = null
     this._testSuite = null
   }
@@ -22,31 +23,26 @@ class Yatu {
     this._addDependenciesToInjector()
 
     this._testSuite.prepare(this._config)
-    this._testSuite.execute()
+    const promises = this._testSuite.execute()
+
+    Promise.all(promises).then(results => {
+      results.forEach(r => this._resultPrinter.printFnCallTree(r))
+      this._dbWrapper.destroy()
+      process.exit()
+    })
   }
 
   _createDependencies () {
     this._config = this._readConfig()
-    this._resultPrinter = this._createResultPrinter()
-    this._testRunner = this._createTestRunner()
-    this._testSuite = this._createTestSuite()
+    this._resultPrinter = new ResultPrinter()
+    this._testRunner = new TestRunner()
+    this._testSuite = new TestSuite(this._testRunner, this._resultPrinter)
+    this._dbWrapper = new DbWrapper()
   }
 
   _readConfig () {
     const configReader = new ConfigReader(this._pathToProject)
     return configReader.readConfigFile(this._pathToTestsFile)
-  }
-
-  _createResultPrinter () {
-    return new ResultPrinter()
-  }
-
-  _createTestRunner () {
-    return new TestRunner(this._resultPrinter)
-  }
-
-  _createTestSuite () {
-    return new TestSuite(this._testRunner)
   }
 
   _addDependenciesToInjector () {
@@ -55,6 +51,7 @@ class Yatu {
     Injector.perpetuate(new ObjectProxifier())
     Injector.perpetuate(new ObjectReviver())
     Injector.perpetuate(new ObjectTreeReviver())
+    Injector.perpetuate(this._dbWrapper)
   }
 }
 

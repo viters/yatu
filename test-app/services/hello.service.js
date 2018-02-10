@@ -3,16 +3,20 @@ class HelloService {
     this._smthService = smthService
   }
 
-  greet (name) {
+  async greet (name) {
     let x = 0
     for (let i = 1; i < 300000000; i++) {
       x = 6123 * 3423 + i
     }
 
-    this._smthService.smth()
+    let v = '';
 
-    // throw new Error('Somethin fukd up');
-    return `Hello ${name} ${x}!`
+    const db = await this._smthService.smth()
+    if (db) {
+      v = db[0][0].datarealizacji
+    }
+
+    return 'Hello ' + name + ' ' + v;
   }
 }
 

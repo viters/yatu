@@ -24,6 +24,7 @@ class ResultPrinter {
     if (fnCall.error) {
       console.log(`${tab}  ${ch.bgRed}!! ERROR: ${fnCall.error}${ch.reset}`)
     } else {
+      fnCall.msg.forEach(x => console.log(`${tab}  $$ ${x}`))
       console.log(`${tab}  :: Finished in ${effectiveTime} (overall ${overallTime})`)
     }
 

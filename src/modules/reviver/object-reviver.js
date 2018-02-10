@@ -7,16 +7,20 @@ class ObjectReviver {
     this._objectProxifier = objectProxifier
   }
 
-  revive (className, path, checkpoints, ctorArgsForeignObjects, fnCallTree) {
-    const ClassPrototype = require('../../' + path)
-    const classObject = new ClassPrototype(...(ctorArgsForeignObjects.map(x => x.instance)))
-    const simpleForeignObject = new SimpleForeignObject(className, path, checkpoints, ctorArgsForeignObjects, classObject)
+  revive (className, path, checkpoints, type, ctorArgsForeignObjects, fnCallTree) {
+    if (type === 'mock') {
+      return new SimpleForeignObject(className, path, checkpoints, [], require('../../' + path))
+    } else {
+      const ClassPrototype = require('../../' + path)
+      const classObject = new ClassPrototype(...(ctorArgsForeignObjects.map(x => x.instance)))
+      const simpleForeignObject = new SimpleForeignObject(className, path, checkpoints, ctorArgsForeignObjects, classObject)
 
-    if (!checkpoints || checkpoints.length === 0) {
-      return simpleForeignObject
+      if (!checkpoints || checkpoints.length === 0) {
+        return simpleForeignObject
+      }
+
+      return this._objectProxifier.proxify(simpleForeignObject, fnCallTree)
     }
-
-    return this._objectProxifier.proxify(simpleForeignObject, fnCallTree)
   }
 }
 
