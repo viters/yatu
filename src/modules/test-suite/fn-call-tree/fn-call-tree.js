@@ -30,9 +30,9 @@ class FnCallTree {
     this._takeStep(fnCall)
   }
 
-  ascend (time, error = null) {
+  ascend (time, {error, msg} = {}) {
     if (!error) {
-      this._current.markComplete(time)
+      this._current.markComplete(time, msg)
     } else {
       this._current.markError(error)
     }
