@@ -1,6 +1,5 @@
 class TestRunner {
-  constructor (resultPrinter) {
-    this._resultPrinter = resultPrinter
+  constructor () {
     this._consoleLog = console.log
     this._consoleError = console.error
   }
@@ -8,12 +7,12 @@ class TestRunner {
   run (testCase) {
     this._disableConsoleSideEffects()
     testCase.entryPoint(...testCase.entryArgs)
-    testCase.isFinished.then(fnCallTreeRoot => this._resultPrinter.printFnCallTree(fnCallTreeRoot))
     this._enableConsoleSideEffects()
+    return testCase.isFinished
   }
 
   _disableConsoleSideEffects () {
-    console.log = (..._) => null
+    console.log = () => null
     console.error = (e) => { throw new Error(e) }
   }
 

@@ -3,6 +3,7 @@
     "class": "HelloController",
     "entry": {
       "name": "sayHello",
+      "async": true,
       "args": "tests/hello-controller/say-hello.test"
     },
     "path": "controllers/hello.controller",
@@ -12,7 +13,8 @@
         "path": "services/hello.service",
         "checkpoints": [
           {
-            "name": "greet"
+            "name": "greet",
+            "async": true
           }
         ],
         "lens": [
@@ -21,7 +23,15 @@
             "path": "services/smth.service",
             "checkpoints": [
               {
-                "name": "smth"
+                "name": "smth",
+                "db": true
+              }
+            ],
+            "lens": [
+              {
+                "class": "Sequelize",
+                "path": "tests/mocks/sequelize.mock.js",
+                "type": "mock"
               }
             ]
           }

@@ -1,9 +1,14 @@
-module.exports = class SmthService {
-  constructor (sequalize) {
-    this.sequalize = sequalize
+class SmthService {
+  constructor (sequelize) {
+    this.sequelize = sequelize
   }
 
-  smth () {
-    return this.sequelize.query('SELECT * FROM cukiernia.zamowienia')
+  async smth () {
+    return new Promise((resolve, reject) => {
+      this.sequelize.query('SELECT * FROM cukiernia.zamowienia').then(resolve)
+    })
   }
 }
+
+
+module.exports = SmthService

@@ -11,7 +11,7 @@ class TestSuite {
   }
 
   execute () {
-    this._testCases.forEach(x => this._testRunner.run(x))
+    return this._testCases.map(x => this._testRunner.run(x))
   }
 }
 
