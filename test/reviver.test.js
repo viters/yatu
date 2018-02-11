@@ -1,57 +1,68 @@
-const ObjectTreeReviver = require('../src/modules/reviver/object-tree-reviver.js')
 const ObjectReviver = require('../src/modules/reviver/object-reviver.js')
 const SimpleForeignObject = require('../src/modules/reviver/foreign-object/simple-foreign-object')
+const ClassMockWithoutCtorArgs = require('../test/mocks/class-without-ctor-arg.mock.js')
+
 const assert = require('assert')
 
 describe('Reviver TestSuite', function () {
-  describe('Object Tree Reviver ', function () {
-    let objectTreeReviver = new ObjectTreeReviver('TestName')
-
-    it('_reviveDependencies method test', function() {
-      // given
-      const emptyTestCase = null
-      const emptyArrayTestCase = []
-
-      const errorResult = []
-
-      // when
-      const validatedEmptyTestCase = objectTreeReviver._reviveDependencies(emptyTestCase)
-      const validatedEmptyArrayTestCase = objectTreeReviver._reviveDependencies(emptyArrayTestCase)
-
-      // then
-      assert.deepEqual(validatedEmptyTestCase, errorResult)
-      assert.deepEqual(validatedEmptyArrayTestCase, errorResult)
-    })
-  })
-
   describe('Object Reviver ', function () {
-    let objectReviver = new ObjectReviver('TestName')
-    
-    it('revive method test', function() {
-      //given
-      const emptyCheckpointsTestCase = null
-      const emptyCheckpointsArrayTestCase = []
-      const path = '../test/mocks/class-without-ctor-arg.mock.js'
+    let objectReviver = new ObjectReviver(require('./mocks/simple-proxifier.mock.js'))
+    it('revive method test', function () {
+      // given
+      const pathObjectWithoutCtor = '../test/mocks/class-without-ctor-arg.mock.js'
+      const pathObjectWithCtor = '../test/mocks/class-with-ctor-arg.mock.js'
       const simpleForeignObject = new SimpleForeignObject(
         'ClassMockWithoutCtorArgs',
-        path,
+        pathObjectWithoutCtor,
         [],
         [],
-        new (require(path))())
-
-      const errorResult = simpleForeignObject
+        new (require(pathObjectWithoutCtor))())
+      const simpleForeignObjectWithObject = new SimpleForeignObject(
+        'ClassMockWithoutCtorArgs',
+        pathObjectWithoutCtor,
+        [],
+        [],
+        require(pathObjectWithoutCtor))
+      const simpleForeignObjectWithCheckpoint = new SimpleForeignObject(
+        'ClassMockWithoutCtorArgs',
+        pathObjectWithoutCtor,
+        ['method'],
+        [],
+        new (require(pathObjectWithoutCtor))())
+      const simpleForeignObjectWithArguments = new SimpleForeignObject(
+        'ClassWithCtorArg',
+        pathObjectWithCtor,
+        ['method'],
+        ['argument'],
+        new (require(pathObjectWithCtor))())
 
       // when
-      const validatedEmptyTestCase = objectReviver.revive('ClassMockWithoutCtorArgs',
-        path,
-        emptyCheckpointsArrayTestCase,
-        'notMock',
+      const validatedNotObjectTestCase = objectReviver.revive('ClassMockWithoutCtorArgs',
+        pathObjectWithoutCtor,
         [],
-        undefined)
+        'class',
+        [])
+      const validatedObjectTestCase = objectReviver.revive('ClassMockWithoutCtorArgs',
+        pathObjectWithoutCtor,
+        [],
+        'object',
+        [])
+      const validatedCheckpointTestCase = objectReviver.revive('ClassMockWithoutCtorArgs',
+        pathObjectWithoutCtor,
+        ['method'],
+        'class',
+        [])
+      const validatedObjectWithArguments = objectReviver.revive('ClassWithCtorArg',
+        pathObjectWithCtor,
+        ['method'],
+        'class',
+        ['argument'])
 
       // then
-      assert.deepEqual(validatedEmptyTestCase, errorResult)
-      // assert.deepEqual(validatedEmptyArrayTestCase, errorResult)
+      assert.deepEqual(validatedNotObjectTestCase, simpleForeignObject)
+      assert.deepEqual(validatedObjectTestCase, simpleForeignObjectWithObject)
+      assert.deepEqual(validatedCheckpointTestCase, simpleForeignObjectWithCheckpoint)
+      assert.deepEqual(validatedObjectWithArguments, simpleForeignObjectWithArguments)
     })
     })
 })
