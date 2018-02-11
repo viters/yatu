@@ -1,0 +1,82 @@
+<div [formGroup]="lensGroup" class="lens-item" [style.marginLeft]="indent * 15 + 'px'">
+  <h3>Lens
+    <button class="ml-2 btn btn-sm btn-primary"
+            type="button"
+            (click)="createLensItem()">Create</button>
+  </h3>
+
+  <div class="row align-items-top">
+    <div class="col-4">
+      <div class="form-group">
+        <h6>Class name</h6>
+        <div>
+          <input class="form-control" formControlName="class" placeholder="Dependency class name">
+        </div>
+      </div>
+    </div>
+
+    <div class="col-4">
+      <div class="form-group">
+        <h6>Path to file</h6>
+        <div>
+          <input class="form-control" formControlName="path" placeholder="Path to file with exported class">
+        </div>
+      </div>
+    </div>
+
+    <div class="col-2">
+      <div class="form-group">
+        <h6>Type</h6>
+        <div>
+          <select class="form-control" formControlName="type">
+            <option value="class">Class</option>
+            <option value="object">Object</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-2 text-right">
+      <button class="btn btn-lg btn-outline-danger btn-sm" (click)="removeLens()">Remove lens item</button>
+    </div>
+  </div>
+
+  <h5>Checkpoints
+    <button class="ml-2 btn btn-sm btn-primary"
+            type="button"
+            (click)="createCheckpoint()">Create
+    </button>
+  </h5>
+
+  <div *ngFor="let checkpoint of lensGroup.get('checkpoints').controls; let i = index;" formArrayName="checkpoints">
+    <div class="row align-items-center" [formGroupName]="i">
+      <div class="col-6">
+        <div class="form-group">
+          <h6>Function name</h6>
+          <div>
+            <input class="form-control" formControlName="name" placeholder="Function name">
+          </div>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="d-flex align-items-center">
+          <input type="checkbox" formControlName="async">
+          <h6 class="mb-0 ml-3">Async function</h6>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="d-flex align-items-center">
+          <input type="checkbox" formControlName="db">
+          <h6 class="mb-0 ml-3">Database call</h6>
+        </div>
+      </div>
+      <div class="col-2 text-right">
+        <button class="btn btn-lg btn-outline-danger btn-sm" (click)="removeCheckpoint(i)">Remove checkpoint</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4" *ngFor="let lensItem of lensGroup.get('lens').controls; let i = index;" formArrayName="lens">
+    <app-lens-form [lensGroup]="lensItem" [indent]="indent + 1" (remove)="removeFromLenses(i)"></app-lens-form>
+  </div>
+</div>

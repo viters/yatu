@@ -15,6 +15,7 @@ class AsyncFnProxyStrategy extends AbstractFnProxyStrategy {
         const endDate = new Date()
         const compTime = endDate.getTime() - startDate.getTime()
 
+        // TODO: Fix wrong additional time
         const queries = await Promise.all(queryContainer.map(x => dbWrapper.query('EXPLAIN ANALYZE ' + x)))
         const msg = queryContainer.map((q, i) => `${q} || ${queries[i][0][1]['QUERY PLAN']} || ${queries[i][0][2]['QUERY PLAN']}`)
 
