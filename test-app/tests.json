@@ -31,7 +31,7 @@
               {
                 "class": "Sequelize",
                 "path": "tests/mocks/sequelize.mock.js",
-                "type": "mock"
+                "type": "object"
               }
             ]
           }

@@ -8,7 +8,7 @@ class ObjectReviver {
   }
 
   revive (className, path, checkpoints, type, ctorArgsForeignObjects, fnCallTree) {
-    if (type === 'mock') {
+    if (type === 'object') {
       return new SimpleForeignObject(className, path, checkpoints, [], require('../../' + path))
     } else {
       const ClassPrototype = require('../../' + path)
