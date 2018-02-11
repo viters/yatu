@@ -5,6 +5,7 @@ class FnCallTree {
     this._root = null
     this._current = null
     this._previous = []
+    this._promises = []
     this._isFinished = new Promise((resolve) => {
       this._finish = resolve
     })
@@ -30,13 +31,18 @@ class FnCallTree {
     this._takeStep(fnCall)
   }
 
-  ascend (time, {error, msg} = {}) {
-    if (!error) {
-      this._current.markComplete(time, msg)
-    } else {
-      this._current.markError(error)
-    }
+  ascend (time) {
+    this._current.markComplete(time)
+    this._stepBack()
+  }
 
+  ascendWithPromise (time, promise) {
+    this._promises.push(this._current.markPromised(time, promise))
+    this._stepBack()
+  }
+
+  ascendWithError (error) {
+    this._current.markError(error)
     this._stepBack()
   }
 
@@ -49,7 +55,7 @@ class FnCallTree {
     this._current = this._previous.pop()
 
     if (this._previous.length === 0) {
-      this._finish(this.root)
+      Promise.all(this._promises).then(() => this._finish(this.root))
     }
   }
 }

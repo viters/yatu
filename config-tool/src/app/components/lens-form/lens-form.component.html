@@ -1,9 +1,5 @@
 <div [formGroup]="lensGroup" class="lens-item" [style.marginLeft]="indent * 15 + 'px'">
-  <h3>Lens
-    <button class="ml-2 btn btn-sm btn-primary"
-            type="button"
-            (click)="createLensItem()">Create</button>
-  </h3>
+  <h3>Lens item</h3>
 
   <div class="row align-items-top">
     <div class="col-4">
@@ -29,7 +25,7 @@
         <h6>Type</h6>
         <div>
           <select class="form-control" formControlName="type">
-            <option value="class">Class</option>
+            <option value="class" selected>Class</option>
             <option value="object">Object</option>
           </select>
         </div>
@@ -75,6 +71,12 @@
       </div>
     </div>
   </div>
+
+  <h5 class="mt-2">Lens
+  <button class="ml-2 btn btn-sm btn-primary"
+          type="button"
+          (click)="createLensItem()">Create</button>
+  </h5>
 
   <div class="mt-4" *ngFor="let lensItem of lensGroup.get('lens').controls; let i = index;" formArrayName="lens">
     <app-lens-form [lensGroup]="lensItem" [indent]="indent + 1" (remove)="removeFromLenses(i)"></app-lens-form>

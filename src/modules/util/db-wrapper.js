@@ -5,7 +5,8 @@ class DbWrapper {
     this._adaptee = new Sequelize('postgres', 'postgres', 'admin', {
       host: '192.168.1.3',
       dialect: 'postgres',
-      logging: false
+      logging: false,
+      operatorsAliases: false
     })
   }
 

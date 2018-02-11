@@ -8,7 +8,7 @@ class FnCall {
     this._status = FnCallStatus.START
     this._time = null
     this._error = null
-    this._msg = []
+    this._dbResponses = []
   }
 
   get className () {
@@ -39,18 +39,36 @@ class FnCall {
     return this._error
   }
 
-  get msg () {
-    return this._msg
+  get dbResponses () {
+    return this._dbResponses
   }
 
   addChild (fnCall) {
     this._children.push(fnCall)
   }
 
-  markComplete (time, msg = []) {
+  markComplete (time) {
     this._time = time
-    this._msg = msg
     this._status = FnCallStatus.COMPLETE
+  }
+
+  markPromised (time, dbQueryInfo) {
+    this._time = time
+    return new Promise((resolve, reject) => {
+      Promise.all(dbQueryInfo.map(x => x.promise)).then((responses) => {
+        responses.forEach((r, i) => {
+          this._dbResponses.push({
+            query: dbQueryInfo[i].query,
+            response: r
+          })
+        })
+        this._status = FnCallStatus.COMPLETE
+        resolve()
+      }, () => {
+        resolve()
+      })
+    })
+
   }
 
   markError (error) {

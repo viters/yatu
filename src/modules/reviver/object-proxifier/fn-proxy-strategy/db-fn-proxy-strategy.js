@@ -1,27 +1,27 @@
 const AbstractFnProxyStrategy = require('./abstract-fn-proxy-strategy')
 const Injector = require('../../../util/injector')
 
-class AsyncFnProxyStrategy extends AbstractFnProxyStrategy {
+class DbFnProxyStrategy extends AbstractFnProxyStrategy {
   execute () {
     return async (...args) => {
       const queryContainer = []
       this._registerLogger(queryContainer)
       const dbWrapper = Injector.retrive('DbWrapper')
 
-      this._fnCallTree.descend(this._className, this._fnName)
+      this._descend()
       try {
-        const startDate = new Date()
-        await this._origMethod.apply(this._instance, args)
-        const endDate = new Date()
-        const compTime = endDate.getTime() - startDate.getTime()
+        const time = await this._asyncMeasureTime(() => this._origMethod.apply(this._instance, args))
 
-        // TODO: Fix wrong additional time
-        const queries = await Promise.all(queryContainer.map(x => dbWrapper.query('EXPLAIN ANALYZE ' + x)))
-        const msg = queryContainer.map((q, i) => `${q} || ${queries[i][0][1]['QUERY PLAN']} || ${queries[i][0][2]['QUERY PLAN']}`)
+        const dbQueryInfo = queryContainer.map(x => ({
+          query: x,
+          promise: dbWrapper.query('EXPLAIN ANALYZE ' + x)
+        }))
 
-        this._fnCallTree.ascend(compTime, {msg})
+        this._deregisterLogger()
+
+        this._ascendWithPromise(time, dbQueryInfo)
       } catch (error) {
-        this._fnCallTree.ascend(-1, {error})
+        this._error(error)
       }
     }
   }
@@ -45,4 +45,4 @@ class AsyncFnProxyStrategy extends AbstractFnProxyStrategy {
   }
 }
 
-module.exports = AsyncFnProxyStrategy
+module.exports = DbFnProxyStrategy
