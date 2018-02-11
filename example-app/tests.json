@@ -4,7 +4,7 @@
     "entry": {
       "name": "sayHello",
       "async": true,
-      "args": "tests/hello-controller/say-hello.test"
+      "args": "yatu/hello-controller/say-hello.test"
     },
     "path": "controllers/hello.controller",
     "lens": [
@@ -30,7 +30,7 @@
             "lens": [
               {
                 "class": "Sequelize",
-                "path": "tests/mocks/sequelize.mock.js",
+                "path": "yatu/mocks/sequelize.mock.js",
                 "type": "object"
               }
             ]

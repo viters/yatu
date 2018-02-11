@@ -1,6 +1,6 @@
 {
   "name": "yatu",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Yet another (performance) testing utility",
   "main": "src/yatu.js",
   "repository": {
@@ -8,7 +8,7 @@
     "url": "https://github.com/Viters/yatu"
   },
   "scripts": {
-    "start": "node ./src/main.js \"test-app/\"",
+    "start": "node ./src/main.js \"example-app/\"",
     "test": "./node_modules/.bin/mocha --reporter spec"
   },
   "author": "",

@@ -10,6 +10,34 @@ class AbstractFnProxyStrategy {
   execute () {
     return new Error('Method not implemented!')
   }
+
+  _measureTime (fn) {
+    const startDate = new Date()
+    fn()
+    return new Date() - startDate.getTime()
+  }
+
+  async _asyncMeasureTime (fn) {
+    const startDate = new Date()
+    await fn()
+    return new Date() - startDate.getTime()
+  }
+
+  _descend () {
+    this._fnCallTree.descend(this._className, this._fnName)
+  }
+
+  _ascend (time) {
+    this._fnCallTree.ascend(time)
+  }
+
+  _ascendWithPromise (time, promise) {
+    this._fnCallTree.ascendWithPromise(time, promise)
+  }
+
+  _error (error) {
+    this._fnCallTree.ascendWithError(error)
+  }
 }
 
 module.exports = AbstractFnProxyStrategy

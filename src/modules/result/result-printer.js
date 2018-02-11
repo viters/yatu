@@ -24,7 +24,10 @@ class ResultPrinter {
     if (fnCall.error) {
       console.log(`${tab}  ${ch.bgRed}!! ERROR: ${fnCall.error}${ch.reset}`)
     } else {
-      fnCall.msg.forEach(x => console.log(`${tab}  $$ ${x}`))
+      fnCall.dbResponses.forEach(x => {
+        const output = `${x.query} || ${x.response[0][1]['QUERY PLAN']} || ${x.response[0][2]['QUERY PLAN']}`
+        console.log(`${tab}  $$ ${output}`)
+      })
       console.log(`${tab}  :: Finished in ${effectiveTime} (overall ${overallTime})`)
     }
 
