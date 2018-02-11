@@ -36,8 +36,8 @@ class FnCallTree {
     this._stepBack()
   }
 
-  ascendWithPromise (time, promise) {
-    this._promises.push(this._current.markPromised(time, promise))
+  ascendWithPromises (time, notes) {
+    this._promises.push(this._current.markPromised(time, notes))
     this._stepBack()
   }
 

@@ -31,8 +31,8 @@ class AbstractFnProxyStrategy {
     this._fnCallTree.ascend(time)
   }
 
-  _ascendWithPromise (time, promise) {
-    this._fnCallTree.ascendWithPromise(time, promise)
+  _ascendWithPromise (time, notes) {
+    this._fnCallTree.ascendWithPromises(time, notes)
   }
 
   _error (error) {

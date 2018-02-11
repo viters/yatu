@@ -1,14 +1,15 @@
 const FnCallStatus = require('./fn-call-status')
+const FnCallNoteType = require('./fn-call-note-type')
 
 class FnCall {
   constructor (className, fnName) {
     this._className = className
     this._fnName = fnName
     this._children = []
-    this._status = FnCallStatus.START
+    this._status = FnCallStatus.Start
     this._time = null
     this._error = null
-    this._dbResponses = []
+    this._notes = []
   }
 
   get className () {
@@ -39,8 +40,8 @@ class FnCall {
     return this._error
   }
 
-  get dbResponses () {
-    return this._dbResponses
+  get notes () {
+    return this._notes
   }
 
   addChild (fnCall) {
@@ -49,22 +50,25 @@ class FnCall {
 
   markComplete (time) {
     this._time = time
-    this._status = FnCallStatus.COMPLETE
+    this._status = FnCallStatus.Complete
   }
 
-  markPromised (time, dbQueryInfo) {
+  markPromised (time, notes) {
     this._time = time
-    return new Promise((resolve, reject) => {
-      Promise.all(dbQueryInfo.map(x => x.promise)).then((responses) => {
-        responses.forEach((r, i) => {
-          this._dbResponses.push({
-            query: dbQueryInfo[i].query,
-            response: r
-          })
+    return new Promise((resolve) => {
+      Promise.all(notes.map(x => x.promise)).then((responses) => {
+        responses.forEach((response, i) => {
+          this._notes.push(Object.assign(notes[i], {response}))
         })
-        this._status = FnCallStatus.COMPLETE
+        this._status = FnCallStatus.Complete
+
         resolve()
       }, () => {
+        this._notes.push({
+          type: FnCallNoteType.Warning,
+          warning: 'At least one promise was rejected'
+        })
+
         resolve()
       })
     })
@@ -73,7 +77,7 @@ class FnCall {
 
   markError (error) {
     this._error = error
-    this._status = FnCallStatus.ERROR
+    this._status = FnCallStatus.Error
   }
 }
 

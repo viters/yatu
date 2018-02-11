@@ -24,7 +24,7 @@ class ResultPrinter {
     if (fnCall.error) {
       console.log(`${tab}  ${ch.bgRed}!! ERROR: ${fnCall.error}${ch.reset}`)
     } else {
-      fnCall.dbResponses.forEach(x => {
+      fnCall.notes.forEach(x => {
         const output = `${x.query} || ${x.response[0][1]['QUERY PLAN']} || ${x.response[0][2]['QUERY PLAN']}`
         console.log(`${tab}  $$ ${output}`)
       })
