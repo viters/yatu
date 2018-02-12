@@ -32,8 +32,8 @@ class ObjectProxifier {
     })
   }
 
-  _provideProxyStrategy (syncOrAsync, settings) {
-    switch (syncOrAsync) {
+  _provideProxyStrategy (strategy, settings) {
+    switch (strategy) {
       case 'Sync':
         return new SyncFnProxyStrategy(settings)
       case 'Async':
@@ -41,7 +41,7 @@ class ObjectProxifier {
       case 'PsqlSequelize':
         return new PsqlSequelizeFnProxyStrategy(settings)
       default:
-        throw new Error(`Strategy ${syncOrAsync} is not implemented!`)
+        throw new Error(`Strategy ${strategy} is not implemented!`)
     }
   }
 }
