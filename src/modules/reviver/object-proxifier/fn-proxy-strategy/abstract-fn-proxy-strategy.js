@@ -1,5 +1,9 @@
 class AbstractFnProxyStrategy {
   constructor (settings) {
+    if (this.constructor === AbstractFnProxyStrategy) {
+      throw new TypeError('Abstract class AbstractFnProxyStrategy cannot be instantiated directly.')
+    }
+
     this._className = settings.className
     this._fnName = settings.fnName
     this._origMethod = settings.origMethod

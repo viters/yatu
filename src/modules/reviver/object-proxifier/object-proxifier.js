@@ -10,6 +10,7 @@ class ObjectProxifier {
     return new ProxyForeignObject(simpleForeignObject, proxyInstance)
   }
 
+  // TODO: Refactor stragegy picking (split this method maybe)
   _getProxyInstance (simpleForeignObject, fnCallTree) {
     return new Proxy(simpleForeignObject.instance, {
       get: (target, propKey) => {
