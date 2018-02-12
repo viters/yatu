@@ -55,10 +55,10 @@ class ConsoleLogRenderer extends AbstractRenderer {
     return (new Array(size)).fill(' ').join('')
   }
 
-  _createNoteHandlers() {
+  _createNoteHandlers () {
     const warningNoteHandler = new WarningNoteHandler()
     const unprocessedNoteHandler = new UnprocessedNoteHandler(warningNoteHandler)
-    return new PostgresQueryNoteHandler(unprocessedNoteHandler);
+    return new PostgresQueryNoteHandler(unprocessedNoteHandler)
   }
 }
 
@@ -95,7 +95,7 @@ class WarningNoteHandler extends NoteHandler {
   handle (note, gap) {
     if (note.type === FnCallNoteType.Warning) {
       const output = `Warning: ${note.warning}`
-      console.log(`${gap}  $$ ${output}`)
+      console.log(`${gap}  ## ${output}`)
     } else if (this._successor) {
       this._successor.handle(note, gap)
     }
@@ -105,7 +105,7 @@ class WarningNoteHandler extends NoteHandler {
 class UnprocessedNoteHandler extends NoteHandler {
   handle (note, gap) {
     const output = `Unhandled note buffered`
-    console.log(`${gap}  $$ ${output}`)
+    console.log(`${gap}  ## ${output}`)
   }
 }
 

@@ -9,10 +9,10 @@ class Reporter {
     this._strategy.render(fnCallTreeRoot)
   }
 
-  _formRenderer(strategy) {
+  _formRenderer (strategy) {
     switch (strategy) {
       case 'console-log':
-        return new ConsoleLogRenderer();
+        return new ConsoleLogRenderer()
       default:
         throw new Error(`Renderer strategy ${strategy} is not implemented.`)
     }

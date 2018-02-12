@@ -21,9 +21,7 @@ class ObjectProxifier {
           return origMethod
         }
 
-        const strategy = checkpointDefinition.db ? 'db' : checkpointDefinition.async ? 'async' : 'sync'
-
-        return this._provideProxyStrategy(strategy, {
+        return this._provideProxyStrategy(checkpointDefinition.strategy || 'Sync', {
           className: simpleForeignObject.className,
           fnName: propKey,
           origMethod: origMethod,
@@ -36,11 +34,11 @@ class ObjectProxifier {
 
   _provideProxyStrategy (syncOrAsync, settings) {
     switch (syncOrAsync) {
-      case 'sync':
+      case 'Sync':
         return new SyncFnProxyStrategy(settings)
-      case 'async':
+      case 'Async':
         return new AsyncFnProxyStrategy(settings)
-      case 'db':
+      case 'PsqlSequelize':
         return new PsqlSequelizeFnProxyStrategy(settings)
       default:
         throw new Error(`Strategy ${syncOrAsync} is not implemented!`)
