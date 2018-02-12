@@ -1,6 +1,6 @@
 <div [formGroup]="entryGroup" class="entry-fn">
   <div class="row">
-    <div class="col-6">
+    <div class="col-4">
       <div class="form-group">
         <h6>Function name</h6>
         <div>
@@ -8,7 +8,7 @@
         </div>
       </div>
     </div>
-    <div class="col-6">
+    <div class="col-4">
       <div class="form-group">
         <h6>Args path</h6>
         <div>
@@ -16,19 +16,12 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="row">
-    <div class="col-3">
-      <div class="form-group d-flex align-items-center">
-        <input type="checkbox" formControlName="async">
-        <h6 class="mb-0 ml-3">Async function</h6>
-      </div>
-    </div>
-    <div class="col-3">
-      <div class="form-group d-flex align-items-center">
-        <input type="checkbox" formControlName="db">
-        <h6 class="mb-0 ml-3">Database call</h6>
+    <div class="col-4">
+      <div class="form-group">
+        <h6>Proxy strategy</h6>
+        <div>
+          <input class="form-control" formControlName="strategy" placeholder="Strategy used in proxify">
+        </div>
       </div>
     </div>
   </div>
