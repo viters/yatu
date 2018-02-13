@@ -20,8 +20,12 @@ function createWindow() {
   win = new BrowserWindow({
     x: 0,
     y: 0,
+    minHeight: 720,
     height: 720,
+    maxHeight: 720,
+    minWidth: 1280,
     width: 1280,
+    maxWidth: 1280,
     icon: './icon.png'
   });
 
