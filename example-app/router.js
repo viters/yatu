@@ -6,7 +6,9 @@ const retrieveAndBind = (className, fnName) => {
 }
 
 const routes = [
-  {method: 'get', path: '/', fn: retrieveAndBind('HelloController', 'sayHello')}
+  {method: 'get', path: '/', fn: retrieveAndBind('HelloController', 'sayHello')},
+  {method: 'get', path: '/order/big', fn: retrieveAndBind('OrderController', 'big')},
+  {method: 'get', path: '/order/mapped', fn: retrieveAndBind('OrderController', 'mapped')}
 ]
 
 module.exports = routes

@@ -5,19 +5,16 @@ class HelloController {
     this._helloService = helloService
   }
 
-  async sayHello (req, res) {
-    let x = 0
-    for (let i = 1; i < 40000000; i++) {
-      x = 6123 * 3423 + i
-    }
-
-    console.log('hello')
-
+  sayHello (req, res) {
     const name = req.query.name || 'anonymous'
+    const result = this._helloService.calculate(6123, 3423)
+    const message = `
+    <h1>Hello ${name}!</h1> 
+    <p>Result of <strong>300000000</strong> iterations of 
+    <code>x = num1 * num2 + i</code> is <strong>${result}</strong>.</p>
+    `
 
-    const dbResponse = await this._helloService.greet(name)
-
-    res.send(dbResponse)
+    res.send(message)
   }
 }
 

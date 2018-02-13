@@ -3,8 +3,11 @@ const app = express()
 const Injector = require('./injector')
 
 const HelloController = require('./controllers/hello.controller')
+const OrderController = require('./controllers/order.controller')
 const HelloService = require('./services/hello.service')
-const SmthService = require('./services/smth.service')
+const OrderService = require('./services/order.service')
+const OrderMapperService = require('./services/order-mapper.service')
+const ClientService = require('./services/client.service')
 const Sequelize = require('sequelize')
 
 Injector.perpetuate(new Sequelize('postgres', 'postgres', 'admin', {
@@ -12,8 +15,11 @@ Injector.perpetuate(new Sequelize('postgres', 'postgres', 'admin', {
   dialect: 'postgres',
   operatorsAliases: false
 }))
-Injector.perpetuate(new SmthService())
+Injector.perpetuate(new ClientService())
+Injector.perpetuate(new OrderService())
+Injector.perpetuate(new OrderMapperService())
 Injector.perpetuate(new HelloService())
+Injector.perpetuate(new OrderController())
 Injector.perpetuate(new HelloController())
 
 const routes = require('./router')

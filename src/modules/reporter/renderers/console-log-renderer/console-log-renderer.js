@@ -52,7 +52,7 @@ class ConsoleLogRenderer extends AbstractRenderer {
   }
 
   _createIndent (size) {
-    return (new Array(size)).fill(' ').join('')
+    return (new Array(size)).fill('\t').join('')
   }
 
   _createNoteHandlers () {

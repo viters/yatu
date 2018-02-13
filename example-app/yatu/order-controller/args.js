@@ -1,0 +1,1 @@
+module.exports = [{}, {send: () => null, setHeader: (a, b) => a}]

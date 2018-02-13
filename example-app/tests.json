@@ -3,35 +3,120 @@
     "class": "HelloController",
     "entry": {
       "name": "sayHello",
-      "strategy": "Async",
-      "args": "yatu/hello-controller/say-hello.test"
+      "args": "yatu/hello-controller/say-hello.test.js",
+      "strategy": "sync"
     },
-    "path": "controllers/hello.controller",
+    "path": "controllers/hello.controller.js",
     "lens": [
       {
         "class": "HelloService",
-        "path": "services/hello.service",
+        "path": "services/hello.service.js",
+        "type": "class",
         "checkpoints": [
           {
-            "name": "greet",
-            "strategy": "Async"
+            "name": "calculate",
+            "strategy": "sync"
+          }
+        ],
+        "lens": []
+      }
+    ]
+  },
+  {
+    "class": "OrderController",
+    "entry": {
+      "name": "big",
+      "args": "yatu/order-controller/args.js",
+      "strategy": "async"
+    },
+    "path": "controllers/order.controller.js",
+    "lens": [
+      {
+        "class": "OrderService",
+        "path": "services/order.service.js",
+        "type": "class",
+        "checkpoints": [
+          {
+            "name": "allOrdersAllClientsCartesian",
+            "strategy": "psqlSequelize"
           }
         ],
         "lens": [
           {
-            "class": "SmthService",
-            "path": "services/smth.service",
+            "class": "Sequelize",
+            "path": "yatu/mocks/sequelize.mock.js",
+            "type": "object",
+            "checkpoints": [],
+            "lens": []
+          }
+        ]
+      },
+      {
+        "class": "OrderMapperService",
+        "path": "yatu/mocks/empty-object.mock.js",
+        "type": "object",
+        "checkpoints": [],
+        "lens": []
+      }
+    ]
+  },
+  {
+    "class": "OrderController",
+    "entry": {
+      "name": "mapped",
+      "args": "yatu/order-controller/args.js",
+      "strategy": "async"
+    },
+    "path": "controllers/order.controller.js",
+    "lens": [
+      {
+        "class": "OrderService",
+        "path": "services/order.service.js",
+        "type": "class",
+        "checkpoints": [
+          {
+            "name": "all",
+            "strategy": "psqlSequelize"
+          }
+        ],
+        "lens": [
+          {
+            "class": "Sequelize",
+            "path": "yatu/mocks/sequelize.mock.js",
+            "type": "object",
+            "checkpoints": [],
+            "lens": []
+          }
+        ]
+      },
+      {
+        "class": "OrderMapperService",
+        "path": "services/order-mapper.service.js",
+        "type": "class",
+        "checkpoints": [
+          {
+            "name": "appendClients",
+            "strategy": "async"
+          }
+        ],
+        "lens": [
+          {
+            "class": "ClientService",
+            "path": "services/client.service.js",
+            "type": "class",
             "checkpoints": [
               {
-                "name": "smth",
-                "strategy": "PsqlSequelize"
+                "name": "all",
+                "strategy": "psqlSequelize"
               }
             ],
             "lens": [
               {
                 "class": "Sequelize",
                 "path": "yatu/mocks/sequelize.mock.js",
-                "type": "object"
+                "type": "object",
+                "checkpoints": [],
+                "lens": []
               }
             ]
           }
