@@ -1,5 +1,7 @@
+const Injector = require('../injector')
+
 class SmthService {
-  constructor (sequelize) {
+  constructor (sequelize = Injector.retrive('Sequelize')) {
     this.sequelize = sequelize
   }
 

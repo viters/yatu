@@ -1,5 +1,7 @@
+const Injector = require('../injector')
+
 class HelloService {
-  constructor (smthService) {
+  constructor (smthService = Injector.retrive('SmthService')) {
     this._smthService = smthService
   }
 
