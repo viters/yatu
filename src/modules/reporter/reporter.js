@@ -2,14 +2,14 @@ const ConsoleLogRenderer = require('./renderers/console-log-renderer/console-log
 
 class Reporter {
   constructor (strategy) {
-    this._strategy = this._formRenderer(strategy)
+    this._strategy = this._chooseRenderer(strategy)
   }
 
   render (fnCallTreeRoot) {
     this._strategy.render(fnCallTreeRoot)
   }
 
-  _formRenderer (strategy) {
+  _chooseRenderer (strategy) {
     switch (strategy) {
       case 'console-log':
         return new ConsoleLogRenderer()
