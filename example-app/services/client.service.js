@@ -1,6 +1,6 @@
 const Injector = require('../injector')
 
-  class ClientService {
+class ClientService {
   constructor (sequelize = Injector.retrive('Sequelize')) {
     this._sequelize = sequelize
   }

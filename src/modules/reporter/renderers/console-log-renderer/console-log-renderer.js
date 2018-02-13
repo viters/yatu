@@ -4,6 +4,7 @@ const ch = {
   fgGreen: '\x1b[32m',
   fgCyan: '\x1b[36m',
   fgYellow: '\x1b[33m',
+  fgMagenta: '\x1b[35m',
   bgRed: '\x1b[41m',
   reset: '\x1b[0m'
 }
@@ -83,8 +84,8 @@ class NoteHandler {
 class PostgresQueryNoteHandler extends NoteHandler {
   handle (note, gap) {
     if (note.type === FnCallNoteType.PostgresQuery) {
-      const output = `${note.query} || ${note.response[0][1]['QUERY PLAN']} || ${note.response[0][2]['QUERY PLAN']}`
-      console.log(`${gap}  $$ ${output}`)
+      console.log(`${gap}  $$ ${ch.fgMagenta}${note.query}${ch.reset}`)
+      note.response[0].forEach(x => console.log(`${gap}     ${x['QUERY PLAN']}`))
     } else if (this._successor) {
       this._successor.handle(note, gap)
     }

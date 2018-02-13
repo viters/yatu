@@ -17,14 +17,14 @@ class AbstractFnProxyStrategy {
 
   _measureTime (fn) {
     const startDate = new Date()
-    fn()
-    return new Date() - startDate.getTime()
+    const output = fn()
+    return {time: new Date() - startDate.getTime(), output}
   }
 
   async _asyncMeasureTime (fn) {
     const startDate = new Date()
-    await fn()
-    return new Date() - startDate.getTime()
+    const output = await fn()
+    return {time: new Date() - startDate.getTime(), output}
   }
 
   _descend () {

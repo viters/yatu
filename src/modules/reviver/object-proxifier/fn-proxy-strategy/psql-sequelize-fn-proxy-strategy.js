@@ -11,7 +11,7 @@ class PsqlSequelizeFnProxyStrategy extends AbstractFnProxyStrategy {
 
       this._descend()
       try {
-        const time = await this._asyncMeasureTime(() => this._origMethod.apply(this._instance, args))
+        const {time, output} = await this._asyncMeasureTime(async () => await this._origMethod.apply(this._instance, args))
 
         const notes = queryContainer.map(x => ({
           type: FnCallNoteType.PostgresQuery,
@@ -22,6 +22,8 @@ class PsqlSequelizeFnProxyStrategy extends AbstractFnProxyStrategy {
         this._deregisterLogger()
 
         this._ascendWithPromise(time, notes)
+
+        return output
       } catch (error) {
         this._error(error)
       }

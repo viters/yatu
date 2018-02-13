@@ -5,7 +5,7 @@ class HelloService {
       x = num1 * num2 + i
     }
 
-    return x;
+    return x
   }
 }
 
