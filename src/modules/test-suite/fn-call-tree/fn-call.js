@@ -60,8 +60,8 @@ class FnCall {
         responses.forEach((response, i) => {
           this._notes.push(Object.assign(notes[i], {response}))
         })
-        this._status = FnCallStatus.Complete
 
+        this._status = FnCallStatus.Complete
         resolve()
       }, () => {
         this._notes.push({
@@ -69,6 +69,7 @@ class FnCall {
           warning: 'At least one promise was rejected'
         })
 
+        this._status = FnCallStatus.Complete
         resolve()
       })
     })
