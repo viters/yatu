@@ -26,8 +26,9 @@ class Yatu {
     this._testSuite.prepare(this._config)
     const promises = this._testSuite.execute()
 
-    Promise.all(promises).then(results => {
-      results.forEach(r => this._reporter.render(r))
+    promises.forEach(p => p.then(r => this._reporter.render(r)))
+
+    Promise.all(promises).then(() => {
       this._dbWrapper.destroy()
       process.exit()
     })
