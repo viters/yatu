@@ -10,7 +10,6 @@ class ObjectProxifier {
     return new ProxyForeignObject(simpleForeignObject, proxyInstance)
   }
 
-  // TODO: Refactor stragegy picking (split this method maybe)
   _getProxyInstance (simpleForeignObject, fnCallTree) {
     return new Proxy(simpleForeignObject.instance, {
       get: (target, propKey) => {
@@ -21,7 +20,7 @@ class ObjectProxifier {
           return origMethod
         }
 
-        return this._provideProxyStrategy(checkpointDefinition.strategy || 'Sync', {
+        return this._provideProxyStrategy(checkpointDefinition.strategy || 'sync', {
           className: simpleForeignObject.className,
           fnName: propKey,
           origMethod: origMethod,
