@@ -22,7 +22,7 @@ describe('Strategy TestSuite', function () {
     // then
     it('Node tests', function () {
       assert.notEqual(fnCallTree.root.time, null)
-      assert.equal(fnCallTree.root.status, FnCallStatus.COMPLETE)
+      assert.equal(fnCallTree.root.status, FnCallStatus.Complete)
       assert.deepEqual(fnCallTree.root.children, [])
     })
     it('Tree is finished', async function () {
