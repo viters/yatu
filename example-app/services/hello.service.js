@@ -1,22 +1,11 @@
 class HelloService {
-  constructor (smthService) {
-    this._smthService = smthService
-  }
-
-  async greet (name) {
+  calculate (num1, num2) {
     let x = 0
-    for (let i = 1; i < 300000000; i++) {
-      x = 6123 * 3423 + i
+    for (let i = 1; i < 1000000000; i++) {
+      x = num1 * num2 + i
     }
 
-    let v = '';
-
-    const db = await this._smthService.smth()
-    if (db) {
-      v = db[0][0].datarealizacji
-    }
-
-    return 'Hello ' + name + ' ' + v;
+    return x
   }
 }
 

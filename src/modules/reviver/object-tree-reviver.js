@@ -8,8 +8,7 @@ class ObjectTreeReviver {
 
   revive (testCaseConfig, fnCallTree) {
     const reviveFn = (className, path, checkpoints, ctorArgs, type) =>
-      this._objectReviver.revive(className, path, checkpoints, ctorArgs, type,
-        fnCallTree)
+      this._objectReviver.revive(className, path, checkpoints, ctorArgs, type, fnCallTree)
 
     return this._reviveRoot(testCaseConfig, reviveFn)
   }

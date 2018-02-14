@@ -5,8 +5,10 @@ class SyncFnProxyStrategy extends AbstractFnProxyStrategy {
     return (...args) => {
       this._descend()
       try {
-        const time = this._measureTime(() => this._origMethod.apply(this._instance, args))
+        const {time, output} = this._measureTime(() => this._origMethod.apply(this._instance, args))
         this._ascend(time)
+
+        return output
       } catch (error) {
         this._error(error)
       }

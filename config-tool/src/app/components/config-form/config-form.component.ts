@@ -71,8 +71,7 @@ export class ConfigFormComponent implements OnInit {
       entry: this._formBuilder.group({
         name: '',
         args: '',
-        async: false,
-        db: false
+        strategy: ''
       }),
       path: '',
       lens: this._formBuilder.array([])
@@ -83,6 +82,7 @@ export class ConfigFormComponent implements OnInit {
     return this._formBuilder.group({
       class: '',
       path: '',
+      type: 'class',
       checkpoints: this._formBuilder.array([]),
       lens: this._formBuilder.array([])
     })

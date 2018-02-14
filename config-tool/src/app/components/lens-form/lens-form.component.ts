@@ -17,8 +17,7 @@ export class LensFormComponent {
   createCheckpoint() {
     (<FormArray>this.lensGroup.get('checkpoints')).push(this._formBuilder.group({
       name: '',
-      async: false,
-      db: false
+      strategy: ''
     }))
   }
 

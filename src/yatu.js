@@ -1,6 +1,6 @@
 const ConfigReader = require('./modules/config/config-reader')
 const TestRunner = require('./modules/test-runner/test-runner')
-const ResultPrinter = require('./modules/result/result-printer')
+const Reporter = require('./modules/reporter/reporter')
 const TestSuite = require('./modules/test-suite/test-suite')
 const Injector = require('./modules/util/injector')
 const ObjectTreeReviver = require('./modules/reviver/object-tree-reviver')
@@ -11,9 +11,10 @@ const DbWrapper = require('./modules/util/db-wrapper')
 class Yatu {
   constructor () {
     this._pathToProject = process.argv[2]
+    this._reporterRenderer = process.argv[3] || 'console-log'
     this._pathToTestsFile = this._pathToProject + 'tests.json'
     this._config = null
-    this._resultPrinter = null
+    this._reporter = null
     this._testRunner = null
     this._testSuite = null
   }
@@ -25,8 +26,9 @@ class Yatu {
     this._testSuite.prepare(this._config)
     const promises = this._testSuite.execute()
 
-    Promise.all(promises).then(results => {
-      results.forEach(r => this._resultPrinter.printFnCallTree(r))
+    promises.forEach(p => p.then(r => this._reporter.render(r)))
+
+    Promise.all(promises).then(() => {
       this._dbWrapper.destroy()
       process.exit()
     })
@@ -34,9 +36,9 @@ class Yatu {
 
   _createDependencies () {
     this._config = this._readConfig()
-    this._resultPrinter = new ResultPrinter()
+    this._reporter = new Reporter(this._reporterRenderer)
     this._testRunner = new TestRunner()
-    this._testSuite = new TestSuite(this._testRunner, this._resultPrinter)
+    this._testSuite = new TestSuite(this._testRunner)
     this._dbWrapper = new DbWrapper()
   }
 
@@ -47,7 +49,6 @@ class Yatu {
 
   _addDependenciesToInjector () {
     Injector.perpetuate(this._config)
-    Injector.perpetuate(this._resultPrinter)
     Injector.perpetuate(new ObjectProxifier())
     Injector.perpetuate(new ObjectReviver())
     Injector.perpetuate(new ObjectTreeReviver())

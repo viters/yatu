@@ -1,7 +1,8 @@
 const AbstractFnProxyStrategy = require('./abstract-fn-proxy-strategy')
 const Injector = require('../../../util/injector')
+const FnCallNoteType = require('../../../test-suite/fn-call-tree/fn-call-note-type')
 
-class DbFnProxyStrategy extends AbstractFnProxyStrategy {
+class PsqlSequelizeFnProxyStrategy extends AbstractFnProxyStrategy {
   execute () {
     return async (...args) => {
       const queryContainer = []
@@ -10,16 +11,19 @@ class DbFnProxyStrategy extends AbstractFnProxyStrategy {
 
       this._descend()
       try {
-        const time = await this._asyncMeasureTime(() => this._origMethod.apply(this._instance, args))
+        const {time, output} = await this._asyncMeasureTime(async () => await this._origMethod.apply(this._instance, args))
 
-        const dbQueryInfo = queryContainer.map(x => ({
+        const notes = queryContainer.map(x => ({
+          type: FnCallNoteType.PostgresQuery,
           query: x,
           promise: dbWrapper.query('EXPLAIN ANALYZE ' + x)
         }))
 
         this._deregisterLogger()
 
-        this._ascendWithPromise(time, dbQueryInfo)
+        this._ascendWithPromise(time, notes)
+
+        return output
       } catch (error) {
         this._error(error)
       }
@@ -45,4 +49,4 @@ class DbFnProxyStrategy extends AbstractFnProxyStrategy {
   }
 }
 
-module.exports = DbFnProxyStrategy
+module.exports = PsqlSequelizeFnProxyStrategy

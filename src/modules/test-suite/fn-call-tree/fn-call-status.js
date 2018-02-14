@@ -1,5 +1,7 @@
-module.exports = Object.freeze({
-  START: 'START',
-  COMPLETE: 'COMPLETE',
-  ERROR: 'ERROR'
+const FnCallStatus = Object.freeze({
+  Start: 'start',
+  Complete: 'complete',
+  Error: 'error'
 })
+
+module.exports = FnCallStatus

@@ -1,5 +1,9 @@
 class AbstractFnProxyStrategy {
   constructor (settings) {
+    if (this.constructor === AbstractFnProxyStrategy) {
+      throw new TypeError('Abstract class AbstractFnProxyStrategy cannot be instantiated directly.')
+    }
+
     this._className = settings.className
     this._fnName = settings.fnName
     this._origMethod = settings.origMethod
@@ -13,14 +17,14 @@ class AbstractFnProxyStrategy {
 
   _measureTime (fn) {
     const startDate = new Date()
-    fn()
-    return new Date() - startDate.getTime()
+    const output = fn()
+    return {time: new Date() - startDate.getTime(), output}
   }
 
   async _asyncMeasureTime (fn) {
     const startDate = new Date()
-    await fn()
-    return new Date() - startDate.getTime()
+    const output = await fn()
+    return {time: new Date() - startDate.getTime(), output}
   }
 
   _descend () {
@@ -31,8 +35,8 @@ class AbstractFnProxyStrategy {
     this._fnCallTree.ascend(time)
   }
 
-  _ascendWithPromise (time, promise) {
-    this._fnCallTree.ascendWithPromise(time, promise)
+  _ascendWithPromise (time, notes) {
+    this._fnCallTree.ascendWithPromises(time, notes)
   }
 
   _error (error) {

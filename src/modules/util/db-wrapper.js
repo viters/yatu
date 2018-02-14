@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 
 class DbWrapper {
-  constructor() {
+  constructor () {
     this._adaptee = new Sequelize('postgres', 'postgres', 'admin', {
       host: '192.168.1.3',
       dialect: 'postgres',
@@ -10,11 +10,11 @@ class DbWrapper {
     })
   }
 
-  query(query) {
+  query (query) {
     return this._adaptee.query(query)
   }
 
-  destroy() {
+  destroy () {
     return this._adaptee.close()
   }
 }

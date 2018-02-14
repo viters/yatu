@@ -1,7 +1,7 @@
 const ProxyForeignObject = require('../foreign-object/proxy-foreign-object')
 const SyncFnProxyStrategy = require('./fn-proxy-strategy/sync-fn-proxy-strategy')
 const AsyncFnProxyStrategy = require('./fn-proxy-strategy/async-fn-proxy-strategy')
-const DbFnProxyStrategy = require('./fn-proxy-strategy/db-fn-proxy-strategy')
+const PsqlSequelizeFnProxyStrategy = require('./fn-proxy-strategy/psql-sequelize-fn-proxy-strategy')
 
 class ObjectProxifier {
   proxify (simpleForeignObject, fnCallTree) {
@@ -10,6 +10,7 @@ class ObjectProxifier {
     return new ProxyForeignObject(simpleForeignObject, proxyInstance)
   }
 
+  // TODO: Refactor stragegy picking (split this method maybe)
   _getProxyInstance (simpleForeignObject, fnCallTree) {
     return new Proxy(simpleForeignObject.instance, {
       get: (target, propKey) => {
@@ -20,10 +21,7 @@ class ObjectProxifier {
           return origMethod
         }
 
-        const strategy = checkpointDefinition.db ? 'db' : checkpointDefinition.async ? 'async' : 'sync'
-
-
-        return this._provideProxyStrategy(strategy, {
+        return this._provideProxyStrategy(checkpointDefinition.strategy || 'Sync', {
           className: simpleForeignObject.className,
           fnName: propKey,
           origMethod: origMethod,
@@ -34,16 +32,16 @@ class ObjectProxifier {
     })
   }
 
-  _provideProxyStrategy (syncOrAsync, settings) {
-    switch (syncOrAsync) {
+  _provideProxyStrategy (strategy, settings) {
+    switch (strategy) {
       case 'sync':
         return new SyncFnProxyStrategy(settings)
       case 'async':
         return new AsyncFnProxyStrategy(settings)
-      case 'db':
-        return new DbFnProxyStrategy(settings)
+      case 'psqlSequelize':
+        return new PsqlSequelizeFnProxyStrategy(settings)
       default:
-        throw new Error(`Strategy ${syncOrAsync} is not implemented!`)
+        throw new Error(`Strategy ${strategy} is not implemented!`)
     }
   }
 }

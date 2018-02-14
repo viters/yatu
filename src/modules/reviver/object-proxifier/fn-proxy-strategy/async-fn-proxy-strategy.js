@@ -5,8 +5,10 @@ class AsyncFnProxyStrategy extends AbstractFnProxyStrategy {
     return async (...args) => {
       this._descend()
       try {
-        const time = await this._asyncMeasureTime(() => this._origMethod.apply(this._instance, args))
+        const {time, output} = await this._asyncMeasureTime(async () => await this._origMethod.apply(this._instance, args))
         this._ascend(time)
+
+        return output
       } catch (error) {
         this._error(error)
       }
