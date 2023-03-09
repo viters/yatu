@@ -1,5 +1,3 @@
-![](https://viters1.gitbooks.io/yatu-documentation/content/assets/yatu.jpg)
-
 # YATU: Yet Another \(Performance\) Test Utility
 
 **Yatu** is a tool that allows to conduct performance tests for given path of methods inside any application. 
